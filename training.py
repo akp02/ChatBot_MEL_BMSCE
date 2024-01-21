@@ -19,7 +19,7 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense,Activation,Dropout
-from tensorflow.keras.optimizers import SGD
+from tensorflow.keras.optimizers.legacy import SGD
 
 lemmatizer=WordNetLemmatizer()
 class Training:
@@ -29,6 +29,7 @@ class Training:
         self.intents=json.loads(data_file)['intents']
         self.ignore_words=list("!@#$%^&*?")
         self.process_data()
+        
 
     def process_data(self):
         #fetch patterns and tokenize them into words
@@ -42,8 +43,8 @@ class Training:
         self.words=list(filter(lambda x:x not in self.ignore_words,self.words))
         
         #lemmatize the words and sort the class and word lists                    
-        self.words=list(map(lemmatizer.lemmatize,self.words))
-        self.words=sorted(list(set(self.words)))
+        self.words=list(map(lemmatizer.lemmatize,self.words))#type: list
+        self.words=sorted(list(set(self.words)))#type: list
         self.classes=sorted(list(set(self.classes)))
 
     def train_data(self):
